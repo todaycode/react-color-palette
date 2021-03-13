@@ -1,63 +1,47 @@
 
-import React, { Component } from "react";
-import FlipPallets from "./FlipPallets/index";
-import FlipPalletsPicker from "./FlipPalletsPicker";
+import React, { useState } from "react";
+import { FlipPalettes } from "./FlipPalettes";
+import { FlipPicker} from "./FlipPaletteSelector";
 import { DEFAULT_SCALE } from "./constants";
 import "./css/ColorscalePicker.css";
 
-class FlipPalletsComponent extends Component {
-  constructor(props) {
-    super(props);
-
-    this.onChange = this.onChange.bind(this);
-    this.toggleFlipPalletsPicker = this.toggleFlipPalletsPicker.bind(this);
-
-    this.state = {
-      showFlipPalletsPicker: false,
-      colorscale: DEFAULT_SCALE,
-    };
-  }
-
-  onChange = colorscale => {
-    this.setState({
+export const FlipPalletsComponent = props => {
+  const [flipPalletsPickerState, setstate] = useState({showFlipPalletsPicker: false,colorscale: DEFAULT_SCALE,});
+  const onChange = colorscale => {
+    setstate({
+      ...flipPalletsPickerState,
       colorscale: colorscale
     });
   };
-
-  toggleFlipPalletsPicker = () => {
-    this.setState({ showFlipPalletsPicker: !this.state.showFlipPalletsPicker });
+  const toggleFlipPalletsPicker = () => {
+    setstate({...flipPalletsPickerState,showFlipPalletsPicker: !flipPalletsPickerState.showFlipPalletsPicker });
   };
-
-  render() {
-    let toggleButtonStyle = {};
-    if (this.state.showFlipPalletsPicker) {
-      toggleButtonStyle = { borderColor: "#A2B1C6" };
-    }
+  let toggleButtonStyle = {};
+  if (flipPalletsPickerState.showFlipPalletsPicker) {
+    toggleButtonStyle = { borderColor: "#A2B1C6" };
+  }
     return (
       <div className="flipcomponent">
         <div
-          onClick={this.toggleFlipPalletsPicker}
+          onClick={toggleFlipPalletsPicker}
           className="toggleButton"
           style={toggleButtonStyle}
         >
-          <div className="palleteLabel">FlipPallets</div>
-          <FlipPallets
+          <div className="palleteLabel">FlipPalette</div>
+          <FlipPalettes
             name="displaySwath"
-            colorscale={this.state.colorscale}
+            colorscale={flipPalletsPickerState.colorscale}
             onClick={() => {}}
             width={250}
           />
         </div>
-        {this.state.showFlipPalletsPicker && (
-          <FlipPalletsPicker
-            onChange={this.onChange}
-            colorscale={this.state.colorscale}
+        {flipPalletsPickerState.showFlipPalletsPicker && (
+          <FlipPicker
+            onChange={onChange}
+            colorscale={flipPalletsPickerState.colorscale}
             width={250}
           />
         )}
       </div>
     );
-  }
 }
-
-export default FlipPalletsComponent;

@@ -1,23 +1,23 @@
-import React, {Component} from 'react';
+import React, { useRef } from 'react';
 import ReactDOM from 'react-dom';
 import {DEFAULT_SCALE} from '../constants';
 
-export default class FlipPallets extends Component {
-  render() {
-    const scale = this.props.colorscale ? this.props.colorscale : DEFAULT_SCALE;
-
+export const FlipPalettes  = props => {
+    const scale = props.colorscale ? props.colorscale : DEFAULT_SCALE;
+    const colorscaleElementRef = useRef(null);
+    console.log("scale",scale)
     return (
-      <div style={{width: '100%'}} className={this.props.name? "colorscale-container display-pos" :"colorscale-container"}>
+      <div style={{width: '100%'}} className={props.name? "colorscale-container display-pos" :"colorscale-container"}>
         <div
           className="colorscale-palette-container"
           style={{
             display: 'inline-block',
             textAlign: 'start',
-            width: this.props.label ? '75%' : '100%',
-            height: this.props.name? '50px' : '20px',
-            border: this.props.name? '3px solid' : '0px'
+            width: props.label ? '75%' : '100%',
+            height: props.name? '50px' : '20px',
+            border: props.name? '3px solid' : '0px'
           }}
-          ref = "myDiv"
+          ref = { colorscaleElementRef }
         >
           <div
             className="colorscale-block"
@@ -29,15 +29,15 @@ export default class FlipPallets extends Component {
             onClick={() => {
               let prevDiv = document.getElementsByClassName('borderClass');
               if(prevDiv.length !== 0) prevDiv[0].classList.remove('borderClass');
-              let selectedDiv = ReactDOM.findDOMNode(this.refs.myDiv);
+              let selectedDiv = ReactDOM.findDOMNode(colorscaleElementRef.current);
               selectedDiv.classList.add("borderClass");
-              return this.props.onClick(scale, this.props.start, this.props.rot)
+              return props.onClick(scale, props.start, props.rot)
             }}
           >
             {scale.map((x, i) => (
               <div
                 key={i}
-                className={this.props.name ? "colorscale-swatch display-swatch": "colorscale-swatch"}
+                className={props.name ? "colorscale-swatch display-swatch": "colorscale-swatch"}
                 style={{
                   backgroundColor: x,
                   width: '' + 100.0 / scale.length + '%',
@@ -52,5 +52,4 @@ export default class FlipPallets extends Component {
         </div>
       </div>
     );
-  }
 }

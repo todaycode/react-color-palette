@@ -1,14 +1,10 @@
-import React, { Component } from "react";
+import React from "react";
 
-import FlipPalletsComponent from "./components/FlipPalletsComponent"
-class App extends Component {
-  render() {
+import { FlipPalletsComponent } from "./components/FlipPalletsComponent"
+export const App = props => {
     return (
-      <div className="App" style={{"text-algin": "center"}}>
+      <div className="App" style={{"textAlgin": "center"}}>
         <FlipPalletsComponent />
       </div>
     );
-  }
 }
-
-export default App;
